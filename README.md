@@ -46,6 +46,7 @@ Copies these files unchanged from `dev/` into the project's `.pi/` directory:
 | `APPEND_SYSTEM.md` | Instructions for using the memory MCP server |
 | `mcp.json` | Git MCP server via `uvx`; memory MCP server via `npx` |
 | `settings.json` | Store sessions in `.pi/sessions` |
+| `skills/code-review/SKILL.md` | Code review workflow, invoked with `/skill:code-review` |
 
 Unlike `create`, Bake does not create a project, initialize Git, install
 dependencies, or start Pi/MCP servers. Templates remain unchanged.
@@ -64,6 +65,34 @@ Consider ignoring these runtime files in the project's `.gitignore`:
 ```
 
 Bake does not edit `.gitignore`. Memory and sessions may contain private data.
+
+## Skills
+
+Pi discovers project skills in `.pi/skills/`. Bake recursively copies all files
+from the optional `dev/skills/` directory, including scripts, references, and
+assets. Add bundled skills using this layout:
+
+```text
+dev/skills/my-skill/
+├── SKILL.md
+├── scripts/
+└── references/
+```
+
+Start `SKILL.md` with YAML frontmatter containing `name: my-skill` and a
+`description` explaining what it does and when to use it, followed by workflow
+instructions. Use lowercase letters, numbers, and hyphens for names, matching
+the directory name. Reference supporting files relative to the skill directory.
+
+Run Bake again to install new skills, then `/reload` in Pi. Invoke explicitly
+with `/skill:my-skill`, or let Pi choose based on the description. Review skills
+and supporting scripts before granting project trust.
+
+Skill files follow the same conflict, `--force`, and `--dry-run` rules as config
+files. Unrelated project skills and extra files in bundled skill directories
+remain untouched, even with `--force`. Source symlinks and destination symlinks
+(including parent directories) are rejected. Empty directories are not copied;
+Bake copies files without installing dependencies or validating skill content.
 
 ## Tests
 
