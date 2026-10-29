@@ -1,0 +1,25 @@
+{
+  "mcpServers": {
+    "git": {
+      "transport": "stdio",
+      "command": "uvx",
+      "args": [
+        "--python",
+        "3.13",
+        "--with",
+        "cryptography<49",
+        "mcp-server-git"
+      ]
+    },
+    "memory": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-memory"
+      ],
+      "env": {
+        "MEMORY_FILE_PATH": "${PWD}/.pi/mcp-server-memory.jsonl"
+      }
+    }
+  }
+}
